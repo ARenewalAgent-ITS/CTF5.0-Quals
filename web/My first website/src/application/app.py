@@ -4,7 +4,7 @@ import random, os
 
 app = Flask(__name__)
 
-blacklist = ["os", "popen", "subprocess", "_", "mro", ".", "globals", "locals", "config", "builtins", "import", "{{", "application", "getitem", "read", "getitem", " ", "mro", "request", "attr"]
+blacklist = ["args", "headers", "cookies", "environ", "values", "query", "form", "os", "system", "popen", "subprocess", "globals", "locals", "init", "join", "module", "config", "builtins", "import", "application", "getitem", "read", "getitem", "mro", "'", '"', "_", "{{", " ", "[", "]"]
 
 def sanitize_input(name):
     for word in blacklist:
