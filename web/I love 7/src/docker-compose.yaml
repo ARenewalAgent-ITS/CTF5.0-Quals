@@ -4,7 +4,7 @@ services:
   proxy:
     image: nginx:latest
     ports:
-      - 53622:80
+      - 10011:80
     volumes:
       - ./proxy.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
