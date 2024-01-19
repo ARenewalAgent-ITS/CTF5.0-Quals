@@ -23,7 +23,7 @@ services:
     environment:
       APPNAME: Admin
       APPURL: http://app:8080/
-      APPURLREGEX: ^http://app:8080/.*$
+      APPURLREGEX: ^http://app:8080/.*
       APPFLAG: ARA5{7_15_mY_LuCKy_nUmb3r_h4HaH4ha}
       APPLIMIT: 2
       APPLIMITTIME: 60
