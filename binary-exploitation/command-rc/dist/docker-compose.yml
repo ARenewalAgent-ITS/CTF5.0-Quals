@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  command-rc:
+    build:
+      context: . 
+      dockerfile: Dockerfile 
+    ports: 
+    - "10023:1337"
