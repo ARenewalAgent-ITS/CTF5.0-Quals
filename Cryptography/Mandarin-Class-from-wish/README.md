@@ -7,7 +7,29 @@
 
 So here we'll see what's inside the chall.py file
 
-![img](https://github.com/lnk7333/Mandarin-Class-from-wish/assets/156457106/71177d55-fa8a-4664-8e20-52ef12179d85)
+```python
+
+import random
+from random import randint
+
+flag = "???"
+
+encrypted_flag = ""
+
+key = randint(1,500)
+
+for ch in flag:
+
+    e = chr(ord(ch)*key)
+    encrypted_flag += e
+
+print(key)
+print(encrypted_flag)
+
+# print(key) = ???
+# print(encrypted_flag) = "㭪䫴㭪ひ灮带⯠⯠孨囖抸櫲婾懎囖崼敶栴囖溚⾈牂"
+
+```
 
 as we see, we got information about the encrypted_flag and how it was made.
 But we didn't know what the key is
@@ -20,13 +42,20 @@ From the chall.py file, we know that the key is a random number ranging from 1 t
 ```key = randint(1,500)```
 and for that, we can make a code to iterate from 1 to 500
 
-![img_2](https://github.com/lnk7333/Mandarin-Class-from-wish/assets/156457106/18ff0161-9921-4a33-9d9c-85b90613430d)
+```python
+
+encrypted_flag = "㭪䫴㭪ひ灮带⯠⯠孨囖抸櫲婾懎囖崼敶栴囖溚⾈牂"
+
+for key in range (1,501):
+    flag = ""
+
+```
 
 
 ### STEP 2
 
 The next step is to examine again what the code does
-```
+```python
 for ch in flag:
     e = chr(ord(ch)*key)
     encrypted_flag += e
@@ -44,7 +73,20 @@ Okay so we need to reverse those code
 
 Here is the code i wrote to reverse
 
-![img_3](https://github.com/lnk7333/Mandarin-Class-from-wish/assets/156457106/02d723f0-0764-41ad-92f1-59615c497658)  
+```python
+
+encrypted_flag = "㭪䫴㭪ひ灮带⯠⯠孨囖抸櫲婾懎囖崼敶栴囖溚⾈牂"
+
+for key in range (1,501):
+    flag = ""
+    for ch in encrypted_flag:
+        e = chr(ord(ch)//key)
+        flag += e
+    
+    print(key)
+    print(flag)
+
+```
 
 Now everything is all set, you just need to ```print()``` those flags and then find the original flag
 *) The flag format ```ARA5{}``` might helps you find it
