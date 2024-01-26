@@ -90,8 +90,8 @@ def main():
     # Soal 10
 
     soal10 = input(
-        "10. What the domain that's included in the malware? (format: https://redacted.tld/*******)\n")
-    if soal10 == "https://erp.wesmarines.com/6wiEvQA":
+        "10. What the function name that has loaded command for the malware\n")
+    if soal10 == "_0x3cef":
         print("ARA5{1t5_4ll_4b0ut_4tt3nt10n_th3_M4lW4r3_1nv3st1g4t0r_0x69a221}")
     else:
         print("Try Again")
