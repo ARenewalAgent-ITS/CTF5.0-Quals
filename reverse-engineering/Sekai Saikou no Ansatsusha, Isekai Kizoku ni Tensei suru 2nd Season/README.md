@@ -22,17 +22,18 @@ medium/hard
 ## Hints
 
 ## Tags
-`C++`, `Windows 32 API`, `DLL Injection`
+`C++`, `Windows 32 API`, `DLL Injection`, `Shared Memory Region`
 
 ## Notes
 
 ## Solver
 TLDR;
 - Flag is encrypted and stored within the Executable
-- Open `mspaint.exe` as Administrator
+- DLL will then attempt to decrypt it and write it into a Global Shared Memory.
+- Open `mspaint.exe` as Administrator. This will be the victim process which the DLL will be injected into.
 - Run `LughTuathaDe.exe` as Administrator
 - Enter the correct code (i.e. Flag from the first stage)
-- A console will then open, outputting the flag 
+- While those two process is running, write another program which will read the Shared Memory and output the result (PoC: `src/Solve/Solve.cpp`). 
 
 Executable POV
 - Given `LughTuathaDe.exe` it will prompt for an input just like last time. However if the flag was correct, it will do much more in the background (read how to solve the first Stage of the challenge for more context).
@@ -47,7 +48,7 @@ DLL POV:
 - Given `TotallyNotMalicious.dll`, it is a Windows Shared Library.
 - In Windows, Libaries can also have a Main Entry point which is [DllMain](https://learn.microsoft.com/en-us/windows/win32/dlls/dllmain).
 - When this dll is attached to a process, it will a call a function which basically a `Win` function. 
-- What it does is it will output the flag to a console. It does this by decrypting the encrypyed flag which is stored and can be viewed statically within the Executable. 
+-  It will attempt to decrypt the encrypyed flag which is stored and can be viewed statically within the Executable. 
 - The flag itself is encrypted using AES. The Key and the Ciphertext itself can be grabbed by simply reading the raw Executable at a certain offset. 
-- The IV However, only exist if the first flag was correct, which also then will be written to A Shared Memory previously created by the Executable and read by the dll.
-- It will try to reopen a Console if the current `Process Window` (i.e. `mspaint.exe` in this case) has no `stdout` Console yet and output the flag.
+- The IV However, only exist if the first flag was correct, which also then will be written to A Shared Memory (`Global\\Harem`) previously created by the Executable and read by the dll.
+- It will then write the decrypted to another Shared Memory Region (`Global\\Flag`).

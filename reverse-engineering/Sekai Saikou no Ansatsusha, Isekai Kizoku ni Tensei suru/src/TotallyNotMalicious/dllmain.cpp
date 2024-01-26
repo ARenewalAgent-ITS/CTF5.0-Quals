@@ -26,6 +26,9 @@ using CryptoPP::AES;
 using CryptoPP::CBC_Mode;
 
 const WCHAR SharedMemoryName[] = L"Global\\Harem";
+const SHORT obscure[] = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xe, 0xd, 0x13, 0x2 };
+WCHAR FlagMemoryName[sizeof(obscure)] = { 0 };
+HANDLE hSharedFile;
 
 // was about to use this to read those values but something 
 // went wrong, and I don't have the time to fix it atm
@@ -159,7 +162,40 @@ BOOL GetIV(BYTE* iv)
     return true;
 }
 
-string Decrypt()
+BOOL CopyFlagToSharedMemoryRegion(string flag)
+{
+    for (int i = 0; i < 11; i++)
+    {
+        FlagMemoryName[i] = (WCHAR)(obscure[i] ^ SharedMemoryName[i]);
+    }
+
+    LONG BufferSize = flag.size();
+    LPTSTR pBuffer;
+
+    hSharedFile = OpenFileMappingW(FILE_MAP_ALL_ACCESS, FALSE, FlagMemoryName);
+    if (hSharedFile == NULL)
+    {
+        hSharedFile = CreateFileMappingW(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, BufferSize, FlagMemoryName);
+        if (hSharedFile == NULL)
+        {
+            return false;
+        }
+    }
+
+    pBuffer = (LPTSTR)MapViewOfFile(hSharedFile, FILE_MAP_ALL_ACCESS, 0, 0, BufferSize);
+    if (pBuffer == NULL)
+    {
+        CloseHandle(hSharedFile);
+        return false;
+    }
+
+    memcpy((PVOID)pBuffer, flag.c_str(), BufferSize);
+    UnmapViewOfFile(pBuffer);
+
+    return true;
+}
+
+BOOL Decrypt()
 {
     // YT
     BYTE key[AES::MAX_KEYLENGTH];
@@ -170,7 +206,7 @@ string Decrypt()
     
     if (!GetIV(iv) || !GetKeyAndCipher(key, himitsu))
     {
-        return string("");
+        return false;
     }
 
     string cipher(himitsu);
@@ -192,7 +228,9 @@ string Decrypt()
         exit(1);
     }
 
-    return plain;
+    CopyFlagToSharedMemoryRegion(plain);
+
+    return true;
 }
 
 void Win()
@@ -201,16 +239,18 @@ void Win()
     FILE* f = new FILE;
     freopen_s(&f, "CONOUT$", "w", stdout);
     
-    string flag = Decrypt();
+    string buf;
+    BOOL flag = Decrypt();
 
-    if (flag.empty()) {
-        cerr << "Failed to decrypt flag" << endl;
+    if (!flag) {
+        cout << "Failed to decrypt flag" << endl;
         MessageBoxA(NULL, "Failed to decrypt flag. Please contact Author", "ERR", MB_ICONSTOP);
     }
     else {
-        cout << flag << endl;
+        cout << "Loh flagnya mana?" << endl;
+        cout << "yang bener aja... rugi dong!" << endl;
         MessageBoxA(NULL, "Congrats I guess?", "Totally not sus DLL", MB_ICONINFORMATION);
-        getline(cin, flag);
+        getline(cin, buf);
     }
 
     //exit(0);
