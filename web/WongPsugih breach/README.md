@@ -7,3 +7,5 @@ Description :
 anyway please leak the WongPsugih website because he's not xawang xinawang
 
 Author : abdieryy
+
+## How to Solve
