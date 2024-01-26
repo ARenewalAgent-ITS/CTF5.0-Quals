@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <iostream>
-#include <string>
 #include <TlHelp32.h>
 #include "cryptlib.h"
 #include "hex.h"
@@ -23,11 +22,11 @@ using CryptoPP::CBC_Mode;
 const WCHAR SharedMemoryName[] = L"Global\\Harem";
 const WCHAR MaliciousDLLName[] = L"TotallyNotMalicious.dll";
 const CHAR YT[] = "https://www.youtube.com/watch?v=UvgCaAiWo_g&list=RDMM&index=27";
-const SHORT obsecure[] = { 0x39, 0x1c, 0x4, 0x0, 0x5, 0x2, 0xd, 0x60, 0xa, 0xc, 0x28, 0x61 }; // L"mspaint.exe";
+const SHORT obscure[] = { 0x39, 0x1c, 0x4, 0x0, 0x5, 0x2, 0xd, 0x60, 0xa, 0xc, 0x28, 0x61 }; // L"mspaint.exe";
 const char himitsu[] = "\x59\xDE\x86\xB5\x51\xD7\x3E\x1B\x8F\x72\x39\x84\x0F\xE7\x3D\xDA\xA3\xFB\x5C\x93\x6C\xD9\x37\x65\xD0\x25\x2B\xDC\x04\x02\x7D\x02\x58\xB3\x46\xEA\x0B\x85\xF8\x70\x8E\x7C\xA1\x92\xC5\x32\x49\xA4\xE7\xB7\x5B\x9B\xA0\xF6\xBC\x6A\x5E\xB1\x53\x9E\x77\xAA\x0A\xB1";
 
 WCHAR Harem[] = { 0x0, 0xe, 0x6, 0x15, 0x9, 0x21, 0x18, 0x26, 0xe, 0x22, 0x24, 0x4, 0x7, 0x6, 0xd, 0xc, 0x2b, 0x1c, 0x12 }; // L"TarteMahaViekoneDia";
-WCHAR VictimProcessName[sizeof(obsecure)] = {};
+WCHAR VictimProcessName[sizeof(obscure)] = {}; // L"mspaint.exe";
 
 wstring MaliciousDLLPath;
 DWORD VictimProcessId;
@@ -123,6 +122,22 @@ string Decrypt()
     return plain;
 }
 
+BOOL isVictim(const WCHAR name[])
+{
+    if (0x6d != name[0]) return false;
+    if (0x73 != name[1]) return false;
+    if (0x70 != name[2]) return false;
+    if (0x61 != name[3]) return false;
+    if (0x69 != name[4]) return false;
+    if (0x6e != name[5]) return false;
+    if (0x74 != name[6]) return false;
+    if (0x2e != name[7]) return false;
+    if (0x65 != name[8]) return false;
+    if (0x78 != name[9]) return false;
+    if (0x65 != name[10]) return false;
+    return true;
+}
+
 BOOL Validate(wstring input)
 {
     SIZE_T size = input.length();
@@ -138,7 +153,7 @@ BOOL Validate(wstring input)
     for (int i = 0; i < input.length(); i++)
     {
         Harem[i] = Harem[i] ^ MaliciousDLLName[i];
-        VictimProcessName[i] = (WCHAR) (MaliciousDLLName[i] ^ obsecure[i]);
+        VictimProcessName[i] = (WCHAR) (MaliciousDLLName[i] ^ obscure[i]);
 
         if (input[i] != Harem[i])
         {
@@ -174,7 +189,7 @@ DWORD SearchVictimPID(const WCHAR* processName)
     {
         wstring name(processEntry->szExeFile);
 
-        if (!wcscmp(name.c_str(), processName)) // found the victim process
+        if (isVictim(name.c_str())) // found the victim process
         {
             ret = processEntry->th32ProcessID;
             break;
