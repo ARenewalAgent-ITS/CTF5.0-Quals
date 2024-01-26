@@ -20,7 +20,7 @@ Namun jika dicoba memasukan `{{7*7}}`, maka SSTI akan terjadi
 
 ![solve2](images/solve2.jpg)
 
-Untuk mengatasi hal tersebut kita perlu melakukan bypass kata terlarang dengan (hex)[https://www.freecodecamp.org/news/ascii-table-hex-to-ascii-value-character-code-chart-2/]
+Untuk mengatasi hal tersebut kita perlu melakukan bypass kata terlarang dengan [hex](https://www.freecodecamp.org/news/ascii-table-hex-to-ascii-value-character-code-chart-2/)
 
 ```
 a = \x61
@@ -28,7 +28,7 @@ b = \x62
 application = \x61\x70\x70\x6c\x69c\x61\x74\x69\x6f\x6e
 ```
 
-Dengan mengambil referensi payload dari (PayloadBox)[https://github.com/payloadbox/ssti-payloads]
+Dengan mengambil referensi payload dari [PayloadBox](https://github.com/payloadbox/ssti-payloads)
 
 Maka kita dapat membuat payload seperti ini
 
