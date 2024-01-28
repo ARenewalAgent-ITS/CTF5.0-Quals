@@ -9,9 +9,17 @@ Author: daffainfo
 ```
 ### Cara Solve
 
-* SSTI dengan menggunakan bilangan desimal (Untuk referensi bisa dibaca [disini](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery#bypass-using-a-decimal-ip-location))
+* SSRF dengan menggunakan bilangan desimal (Untuk referensi bisa dibaca [disini](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery#bypass-using-a-decimal-ip-location))
 
-* Kemudian diikuti dengan SSTI yang memiliki filter sangat banyak. Jika melihat dokumentasi Jinja2, kita bisa membypass filter-filter tersebut menggunakan `request.referrer`
+* Kemudian diikuti dengan SSTI yang memiliki filter sangat banyak.
+
+    * Untuk karakter `{{` bisa dibypass dengan `{%`
+
+    * Dikarenakan tidak bisa menggunakan `__` dan `[]`, maka hala tersebut tetap bisa dibypass dengan `|attr()` (Hal tersebut bisa dilihat pada [notes](https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection/jinja2-ssti#common-bypasses) ini)
+
+    * Jika melihat dokumentasi [Jinja2](https://flask.palletsprojects.com/en/2.3.x/api/#flask.Request). Kita bisa membypass filter-filter tersebut menggunakan `request.referrer` karena jika kita menginput header `Referer` pada HTTP request, maka header `Referer` juga ditampilkan pada HTTP response
+
+    * `.split().pop()` digunakan untuk mengakses word" yang diblock seperti `__import__`, etc.
 
 ## Final payload:
 ```
