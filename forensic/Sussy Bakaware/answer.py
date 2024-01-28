@@ -41,7 +41,7 @@ def main():
     # Soal 5
 
     soal5 = input(
-        "5. Arrival or timestamp of malware? (UTC Format, YYYY-MM-DD HH-MM-SS UTC)\n")
+        "5. Arrival or timestamp of malware? (UTC Format, YYYY-MM-DD HH:MM:SS UTC)\n")
     if soal5 == "2024-01-12 20:34:43 UTC":
         print("Correct")
     else:

@@ -39,6 +39,8 @@ def proxy():
 @is_from_localhost
 def dev_environment():
     admin = "daffainfo"
+    css_url = url_for('static', filename='css/main.css')
+    image_url = url_for('static', filename='images/dewaweb.png')
 
     if request.args.get('admin') is not None:
         admin = request.args.get('admin')
@@ -48,16 +50,29 @@ def dev_environment():
         abort(403)
 
     template = '''<!DOCTYPE html>
-    <html>
-    <body>
-    <form action="" method="GET">
-    Admin: <input name="admin"> <br>
-    <input type="submit" value="Preview!">
-    </form>
-    <h1>NOTES!! ONLY ADMIN CAN ACCESS THIS AREA!</h1>
-    <p>Admin: {}</p>
-    </body>
-    </html>'''.format(admin)
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Admin Notes Preview</title>
+            <link rel="stylesheet" href="{}">
+        </head>
+        <body>
+            <h1>NOTES!! ONLY ADMIN CAN ACCESS THIS AREA!</h1>
+            <form action="" method="GET">
+                <label for="admin">Admin:</label>
+                <input type="text" id="admin" name="admin" required>
+                <br>
+                <input type="submit" value="Preview!">
+            </form>
+            <p>Admin: {}<span id="adminName"></span></p>
+            <br>
+            <h3>Powered By</h3>
+            <a href="https://www.dewaweb.com/">
+                <img src="{}" alt="dewaweb">
+            </a>
+        </body>
+        </html>'''.format(css_url, admin, image_url)
     return render_template_string(template)
 
 app.run(host='0.0.0.0', port=1337)

@@ -58,6 +58,14 @@
             font-size: 18px;
             color: #4CAF50;
         }
+
+        img {
+            max-width: 30%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -68,6 +76,20 @@
         <input type="text" name="digit" placeholder="Enter a digit">
         <input type="submit" value="Calculate">
     </form>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h3>Powered By</h3>
+    <a href="https://www.dewaweb.com/">
+        <img src="images/dewaweb.png">
+    </a>
     <script>
         var multiply = function(a, b) {
             return a * b;
